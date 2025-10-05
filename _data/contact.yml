@@ -3,9 +3,10 @@
 - type: github
   icon: "fab fa-github"
 
-- type: twitter
-  icon: "fa-brands fa-x-twitter"
-
+- type: weibo
+  icon: "fa-brands fa-weibo"
+  url:  'https://weibo.com/u/7126201913'
+  
 - type: email
   icon: "fas fa-envelope"
   noblank: true # open link in current tab
