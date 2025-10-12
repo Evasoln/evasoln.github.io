@@ -32,7 +32,7 @@ weibo:
   username: evasoln # change to your Twitter username
 
 social:
-  Losave
+  name: "Losave"
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
 
