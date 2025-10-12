@@ -205,7 +205,7 @@ defaults:
       type: statuses
     values:
       layout: post
-      comments: false
+      comments: true
       toc: false
 
 sass:
