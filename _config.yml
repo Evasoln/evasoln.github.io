@@ -170,6 +170,9 @@ collections:
   tabs:
     output: true
     sort_by: order
+  statuses:
+    output: true
+    permalink: /s/:year:month:day-:title/
 
 defaults:
   - scope:
@@ -192,6 +195,14 @@ defaults:
     values:
       layout: page
       permalink: /:title/
+  
+  - scope:
+      path: ""
+      type: statuses
+    values:
+      layout: post
+      comments: false
+      toc: false
 
 sass:
   style: compressed
