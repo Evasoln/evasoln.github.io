@@ -119,18 +119,15 @@ comments:
   #  issue_term: # < url | pathname | title | ...>
   # Giscus options › https://giscus.app
   giscus:
-    repo: 'evasoln/evasoln.github.io' # <gh-username>/<repo>
-    repo_id: 'R_kgDOP8dn2Q'
-    category: 'Comments'
-    category_id: 'DIC_kwDOP8dn2c4Cwi4x'
-    mapping: 'pathname' # optional, default to 'pathname'
-    strict: '0' # optional, default to '0'
-    input_position: 'bottom' # optional, default to 'bottom'
-    lang: 'zh-CN' # optional, default to the value of `site.lang`
-    reactions_enabled: '1' # optional, default to the value of `1`
-    theme: 'preferred_color_scheme'
-    mapping: 'pathname'
-    crossorigin: 'anonymous'
+    repo: "evasoln/evasoln.github.io" # <gh-username>/<repo>
+    repo_id: "R_kgDOP8dn2Q"
+    category: "Comments"
+    category_id: "DIC_kwDOP8dn2c4Cwi4x"
+    mapping: "pathname" # optional, default to 'pathname'
+    strict: 0 # optional, default to '0'
+    input_position: "bottom" # optional, default to 'bottom'
+    lang: "zh-CN" # optional, default to the value of `site.lang`
+    reactions_enabled: 1 # optional, default to the value of `1`
     
 
 # Self-hosted static assets, optional › https://github.com/cotes2020/chirpy-static-assets
