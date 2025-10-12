@@ -7,7 +7,6 @@
   icon: "fa-brands fa-weibo"
   url:  'https://weibo.com/u/7126201913'
 
-
 - type: rss
   icon: "fas fa-rss"
   noblank: true
