@@ -56,43 +56,30 @@ render_with_liquid: true
 .feed-card.expanded .feed-toggle { display: none; }
 .feed-card:not(.expanded) .feed-collapse { display: none; }
 
-/* === 展开/收起按钮：明暗模式都清晰 === */
+/* === 明显的展开/收起按钮样式 === */
 .feed-toggle,
 .feed-collapse {
   display: inline-block;
   margin-top: 6px;
   padding: 4px 10px;
   border-radius: 6px;
+  background: var(--theme-color);
+  color: #fff;
   font-size: 0.85rem;
   line-height: 1.6;
   cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
   user-select: none;
-  transition: background .2s ease, color .2s ease, transform .1s ease, border-color .2s ease;
-
-  /* 关键：默认走“描边按钮”，任何主题下都有对比 */
-  background: transparent;
-  color: var(--theme-color);
-  border: 1px solid var(--theme-color);
 }
 .feed-toggle:hover,
-.feed-toggle:focus {
-  background: var(--theme-color);
-  color: #fff;
+.feed-collapse:hover {
+  background: var(--btn-bg-hover);
   transform: translateY(-1px);
 }
-
-/* 收起按钮弱化一点，但同样可见 */
 .feed-collapse {
-  color: var(--text-muted-color);
-  border-color: var(--text-muted-color);
-}
-.feed-collapse:hover,
-.feed-collapse:focus {
+  margin-top: 10px;
   background: var(--text-muted-color);
-  color: #fff;
-  transform: translateY(-1px);
 }
-
 </style>
 
 <div class="feed">
