@@ -1,6 +1,6 @@
 ---
 layout: page
-title: stream
+title: 碎碎念
 icon: "fa-brands fa-weibo"
 order: 2
 permalink: /stream/
