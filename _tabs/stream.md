@@ -54,30 +54,71 @@ render_with_liquid: true
 .feed-card.expanded .feed-toggle { display: none; }
 .feed-card:not(.expanded) .feed-collapse { display: none; }
 
-/* === 新增更明显的按钮样式 === */
+/* —— 基础按钮可读性提升 —— */
 .feed-toggle,
 .feed-collapse {
-  display: inline-block;
-  margin-top: 6px;
-  padding: 4px 10px;
-  border-radius: 6px;
-  background: var(--theme-color);
-  color: #fff;
-  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  margin-top: 8px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: .9rem;
   line-height: 1.6;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.1s ease;
   user-select: none;
+  border: 1px solid transparent;
+  box-shadow: 0 1px 0 rgba(0,0,0,.04);
+  transition: background .2s ease, border-color .2s ease, transform .1s ease, box-shadow .2s ease;
 }
 .feed-toggle:hover,
-.feed-collapse:hover {
-  background: var(--btn-bg-hover);
-  transform: translateY(-1px);
+.feed-collapse:hover { transform: translateY(-1px); }
+
+/* 键盘无障碍 */
+.feed-toggle:focus-visible,
+.feed-collapse:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 3px;
+  border-radius: 10px;
 }
-.feed-collapse {
-  margin-top: 10px;
-  background: var(--text-muted-color);
+
+/* 小箭头图标 */
+.feed-toggle::after { content: "⌄"; font-size: .95em; }
+.feed-collapse::after { content: "⌃"; font-size: .95em; }
+
+/* —— 深色模式（沿用主题主色） —— */
+@media (prefers-color-scheme: dark) {
+  .feed-toggle   { background: var(--theme-color); color: #fff; border-color: rgba(255,255,255,.15); }
+  .feed-toggle:hover { background: var(--btn-bg-hover); }
+  .feed-collapse { background: var(--text-muted-color); color: #fff; border-color: rgba(255,255,255,.15); }
 }
+
+/* —— 浅色模式（显著提亮与描边） —— */
+@media (prefers-color-scheme: light) {
+  /* 展开：蓝色主按钮 */
+  .feed-toggle {
+    background: #2563eb;          /* 强对比纯色 */
+    color: #fff;
+    border-color: #1d4ed8;
+    box-shadow: 0 2px 6px rgba(37,99,235,.18);
+  }
+  .feed-toggle:hover { background: #1d4ed8; border-color: #1e40af; }
+
+  /* 收起：中性灰按钮 */
+  .feed-collapse {
+    background: #334155;
+    color: #fff;
+    border-color: #1f2937;
+    box-shadow: 0 2px 6px rgba(51,65,85,.18);
+  }
+  .feed-collapse:hover { background: #1f2937; border-color: #111827; }
+}
+
+/* 若你的主题不跟随系统，而是用 data-mode 切换，可再加这两组选择器覆盖： */
+html[data-mode="light"] .feed-toggle  { background:#2563eb; color:#fff; border-color:#1d4ed8; box-shadow:0 2px 6px rgba(37,99,235,.18); }
+html[data-mode="light"] .feed-toggle:hover { background:#1d4ed8; border-color:#1e40af; }
+html[data-mode="light"] .feed-collapse { background:#334155; color:#fff; border-color:#1f2937; box-shadow:0 2px 6px rgba(51,65,85,.18); }
+html[data-mode="light"] .feed-collapse:hover { background:#1f2937; border-color:#111827; }
 </style>
 
 <div class="feed">
