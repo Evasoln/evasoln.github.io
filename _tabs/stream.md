@@ -8,7 +8,10 @@ render_with_liquid: true
 ---
 
 <style>
-.feed { max-width: 860px; margin: 0 auto; }
+.feed {
+  max-width: 860px;
+  margin: 0 auto;
+}
 .feed-card {
   border: 1px solid var(--blockquote-border-color);
   background: var(--card-bg);
@@ -20,25 +23,63 @@ render_with_liquid: true
 }
 .feed-card:hover { background: var(--btn-bg-hover); }
 .feed-time {
-  font-size: .85rem; color: var(--text-muted-color);
-  display: inline-flex; align-items: center; gap: .35rem;
+  font-size: .85rem;
+  color: var(--text-muted-color);
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
 }
 .feed-content { margin-top: .35rem; line-height: 1.75; }
 
 .feed-photos {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(100px,1fr));
-  gap: 6px; margin-top: .5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 6px;
+  margin-top: .5rem;
 }
-.feed-photos img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 8px; }
+.feed-photos img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: zoom-in;
+  transition: transform 0.25s ease;
+}
 
 .feed-more { display: none; }
-.feed-toggle, .feed-collapse { cursor: pointer; color: var(--theme-color); font-weight: 500; }
+.feed-card.expanded .feed-more {
+  display: block;
+  max-height: 600px;
+  overflow-y: auto;
+}
+.feed-card.expanded .feed-short { display: none; }
+.feed-card.expanded .feed-toggle { display: none; }
+.feed-card:not(.expanded) .feed-collapse { display: none; }
 
-/* 展开后的状态 */
-.feed-card.expanded .feed-more { display: block; max-height: 600px; overflow-y: auto; }
-.feed-card.expanded .feed-toggle { display: none; }    /* 隐藏“展开” */
-.feed-card.expanded .feed-short { display: none; }     /* 关键：展开后隐藏摘要，避免重复 */
-.feed-card:not(.expanded) .feed-collapse { display: none; } /* 初始隐藏“收起” */
+/* === 明显的展开/收起按钮样式 === */
+.feed-toggle,
+.feed-collapse {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--theme-color);
+  color: #fff;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+  user-select: none;
+}
+.feed-toggle:hover,
+.feed-collapse:hover {
+  background: var(--btn-bg-hover);
+  transform: translateY(-1px);
+}
+.feed-collapse {
+  margin-top: 10px;
+  background: var(--text-muted-color);
+}
 </style>
 
 <div class="feed">
@@ -57,7 +98,7 @@ render_with_liquid: true
 
       {% if html.size > 160 %}
         <span class="feed-toggle" role="button" tabindex="0"
-          onclick="this.closest('.feed-card').classList.add('expanded')">展开</span>
+          onclick="this.closest('.feed-card').classList.add('expanded')">展开全文</span>
 
         <div class="feed-more">
           {{ html }}
@@ -79,26 +120,3 @@ render_with_liquid: true
   </article>
 {% endfor %}
 </div>
-/* --- 点击放大预览图片 --- */
-.feed-photos img {
-  cursor: zoom-in;
-  transition: transform 0.25s ease;
-}
-
-/* 蒙版层 */
-#img-viewer {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-#img-viewer img {
-  max-width: 95%;
-  max-height: 95%;
-  border-radius: 8px;
-  box-shadow: 0 0 12px rgba(0,0,0,0.5);
-  cursor: zoom-out;
-}
