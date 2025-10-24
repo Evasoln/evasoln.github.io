@@ -157,7 +157,17 @@ html[data-mode="light"] .feed-collapse:hover { background:#1f2937; border-color:
     {% if post.photos %}
       <div class="feed-photos">
         {% for img in post.photos %}
-          <img src="{{ img | strip | absolute_url }}" loading="lazy" alt="photo">
+          {% assign src = img | strip %}
+          {% if src contains '://' %}
+            {# 已是完整外链，直接用 #}
+            <img src="{{ src }}" loading="lazy" alt="photo">
+          {% else %}
+            {# 不是外链：拼接 cos_img_base，自动补齐前导斜杠 #}
+            {% if src | slice: 0, 1 != '/' %}
+              {% assign src = '/' | append: src %}
+            {% endif %}
+            <img src="{{ site.cos_img_base }}{{ src }}" loading="lazy" alt="photo">
+          {% endfor %}
         {% endfor %}
       </div>
     {% endif %}
