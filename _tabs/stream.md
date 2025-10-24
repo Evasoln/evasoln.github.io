@@ -155,9 +155,45 @@ html[data-mode="light"] .feed-collapse:hover { background:#1f2937; border-color:
     </div>
 
     {% if post.photos %}
+      {%- assign cos_base = site.cos_img_base | default: "" -%}
+      {%- if cos_base != "" and cos_base endswith "/" -%}
+        {%- assign cos_base = cos_base | slice: 0, -1 -%}
+      {%- endif -%}
+
       <div class="feed-photos">
         {% for img in post.photos %}
-          <img src="{{ img | strip | absolute_url }}" loading="lazy" alt="photo">
+          {%- comment -%}
+            兼容三种写法：
+            1) 字符串："/posts/a.png" 或 "https://xxx/a.png"
+            2) 对象：{ url: "/posts/a.png", alt: "desc" } 或 { src: "...", alt: "..." }
+            3) 带空格/中文：自动做空格转义
+          {%- endcomment -%}
+          {%- assign raw = img.url | default: img.src | default: img | strip -%}
+          {%- assign alt = img.alt | default: "photo" -%}
+
+          {%- if raw == "" -%}{% continue %}{%- endif -%}
+
+          {%- if raw contains "://" -%}
+            {%- assign full = raw -%}                 {# 已是完整外链 #}
+          {%- else -%}
+            {%- if raw | slice: 0, 1 != "/" -%}
+              {%- assign raw = "/" | append: raw -%} {# 自动补前导斜杠 #}
+            {%- endif -%}
+            {%- if cos_base != "" -%}
+              {%- assign full = cos_base | append: raw -%}       {# 拼接图床域名 #}
+            {%- else -%}
+              {%- assign full = raw | absolute_url -%}           {# 兜底走站点域名，避免空 #}
+            {%- endif -%}
+          {%- endif -%}
+
+          {%- assign full = full | replace: " ", "%20" -%}       {# 空格转义，防 404 #}
+
+          <img
+            src="{{ full }}"
+            alt="{{ alt | escape }}"
+            loading="lazy"
+            decoding="async"
+            onerror="this.style.display='none'">
         {% endfor %}
       </div>
     {% endif %}
