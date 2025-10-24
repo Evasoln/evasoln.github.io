@@ -155,9 +155,40 @@ html[data-mode="light"] .feed-collapse:hover { background:#1f2937; border-color:
     </div>
 
     {% if post.photos %}
+      {% assign cos_base = site.cos_img_base | default: "" %}
+      {% if cos_base %}
+        {% if cos_base contains '//' %}
+          {% assign last_char = cos_base | slice: cos_base.size | minus: 1 %}
+          {% if last_char == '/' %}
+            {% assign cos_base = cos_base | slice: 0, cos_base.size | minus: 1 %}
+          {% endif %}
+        {% endif %}
+      {% endif %}
+      
       <div class="feed-photos">
         {% for img in post.photos %}
-          <img src="{{ full }}" alt="{{ alt | escape }}" loading="lazy" style="width:100%;border-radius:8px;cursor:zoom-in;">
+          {% assign src = img.url | default: img.src | default: img | strip %}
+          {% assign alt = img.alt | default: "photo" %}
+
+          {% if src contains '://' %}
+            {% assign full = src %}
+          {% else %}
+            {% if src startswith '/' %}
+              {% assign full = cos_base | append: src %}
+            {% else %}
+              {% assign full = cos_base | append: '/' | append: src %}
+            {% endif %}
+          {% endif %}
+    
+          {%- comment -%}
+          这里自动给 COS 图片增加压缩参数（WebP，960px 宽）
+          如果 URL 里已经有 ? 就不再加
+          {%- endcomment -%}
+          {% unless full contains '?' %}
+            {% assign full = full | append: '?imageMogr2/thumbnail/960x/format/webp/quality/85' %}
+          {% endunless %}
+    
+          <img src="{{ full }}" loading="lazy" alt="{{ alt | escape }}">
         {% endfor %}
       </div>
     {% endif %}
