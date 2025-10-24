@@ -97,7 +97,7 @@ render_with_liquid: true
 @media (prefers-color-scheme: light) {
   /* 展开：蓝色主按钮 */
   .feed-toggle {
-    background: #2563eb;          /* 强对比纯色 */
+    background: #334155;          /* 强对比纯色蓝色#2563eb */
     color: #fff;
     border-color: #1d4ed8;
     box-shadow: 0 2px 6px rgba(37,99,235,.18);
