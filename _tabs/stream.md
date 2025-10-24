@@ -157,7 +157,7 @@ html[data-mode="light"] .feed-collapse:hover { background:#1f2937; border-color:
     {% if post.photos %}
       <div class="feed-photos">
         {% for img in post.photos %}
-          <img src="{{ img | strip }}" loading="lazy" alt="photo">
+          <img src="{{ img | strip | absolute_url }}" loading="lazy" alt="photo">
         {% endfor %}
       </div>
     {% endif %}
