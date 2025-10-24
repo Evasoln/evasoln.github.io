@@ -35,7 +35,7 @@ layout: default
       {% endif %}
     {% endif %}
 
-    <div class="post-photos" style="margin-top:1.2rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;">
+    <div class="post-photos" style="margin:1.5rem auto 0 auto;max-width:860px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;align-items:center;justify-items:center;">
       {% for img in page.photos %}
         {% assign src = img.url | default: img.src | default: img | strip %}
         {% assign alt = img.alt | default: "photo" %}
