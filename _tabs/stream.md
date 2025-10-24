@@ -133,12 +133,7 @@ html[data-mode="light"] .feed-collapse:hover { background:#1f2937; border-color:
     <div class="feed-content e-content">
       {% assign html  = post.content | markdownify %}
       {% assign short = html | strip_html | strip_newlines | truncate: 160, "" %}
-      <a href="{{ post.url }}" class="feed-short" style="text-decoration:none;color:inherit;">
-        {{ short }}
-      </a>
-
-       <!-- 新增“阅读全文”跳转按钮 -->
-      <a href="{{ post.url }}" class="feed-readmore" style="color: var(--theme-color); font-weight: 500; margin-left: 6px;">→ 阅读全文</a>
+      <span class="feed-short">{{ short }}</span>
 
       {% if html.size > 160 %}
         <span class="feed-toggle" role="button" tabindex="0"
