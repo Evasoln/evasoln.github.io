@@ -178,7 +178,7 @@ html[data-mode="light"] .feed-collapse:hover { background:#1f2937; border-color:
             {% endunless %}
 
             <img src="{{ full }}" alt="{{ alt | escape }}" loading="lazy" decoding="async">
-          {% endfor %}
+          {% endif %}
         {% endfor %}
       </div>
     {% endif %}
