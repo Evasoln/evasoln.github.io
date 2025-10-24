@@ -1,0 +1,115 @@
+---
+layout: default
+---
+
+<!-- === 文章正文部分 === -->
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="headline">{{ page.title | escape }}</h1>
+    <div class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+        {{ page.date | date: "%Y-%m-%d" }}
+      </time>
+      {% if page.author %}
+        · <span itemprop="author">{{ page.author }}</span>
+      {% endif %}
+      {% if page.location %}
+        · {{ page.location }}
+      {% endif %}
+    </div>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    {{ content }}
+  </div>
+
+  <!-- === 新增：渲染 photos 数组 === -->
+  {% if page.photos %}
+    {% assign cos_base = site.cos_img_base | default: "" %}
+    {% if cos_base %}
+      {% if cos_base contains '//' %}
+        {% assign last_char = cos_base | slice: cos_base.size | minus: 1 %}
+        {% if last_char == '/' %}
+          {% assign cos_base = cos_base | slice: 0, cos_base.size | minus: 1 %}
+        {% endif %}
+      {% endif %}
+    {% endif %}
+
+    <div class="post-photos" style="margin-top:1.2rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;">
+      {% for img in page.photos %}
+        {% assign src = img.url | default: img.src | default: img | strip %}
+        {% assign alt = img.alt | default: "photo" %}
+        {% if src contains '://' %}
+          {% assign full = src %}
+        {% else %}
+          {% if src startswith '/' %}
+            {% assign full = cos_base | append: src %}
+          {% else %}
+            {% assign full = cos_base | append: '/' | append: src %}
+          {% endif %}
+        {% endif %}
+        {% unless full contains '?' %}
+          {% assign thumb = full | append: '?imageMogr2/thumbnail/960x/format/webp/quality/85' %}
+        {% else %}
+          {% assign thumb = full %}
+        {% endunless %}
+        <a href="{{ full }}" class="lightbox" data-alt="{{ alt }}">
+          <img src="{{ thumb }}" alt="{{ alt | escape }}" loading="lazy" style="width:100%;border-radius:8px;cursor:zoom-in;">
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
+</article>
+
+<!-- === Lightbox 样式 & 脚本 === -->
+<style>
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.lightbox-overlay.active {
+  display: flex;
+}
+.lightbox-overlay img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(255,255,255,.2);
+  transition: transform .2s ease;
+}
+.lightbox-overlay img:hover {
+  transform: scale(1.02);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const overlay = document.createElement('div');
+  overlay.className = 'lightbox-overlay';
+  overlay.innerHTML = '<img src="" alt=""><div style="position:absolute;top:20px;right:30px;font-size:2rem;color:#fff;cursor:pointer;">×</div>';
+  document.body.appendChild(overlay);
+
+  const overlayImg = overlay.querySelector('img');
+  const closeBtn = overlay.querySelector('div');
+
+  document.querySelectorAll('.lightbox').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      overlayImg.src = link.href;
+      overlay.classList.add('active');
+    });
+  });
+
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay || e.target === closeBtn) {
+      overlay.classList.remove('active');
+      overlayImg.src = '';
+    }
+  });
+});
+</script>
