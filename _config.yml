@@ -238,3 +238,9 @@ jekyll-archives:
     category: /categories/:name/
 
 cos_img_base: "https://blog-evasoln-1257350348.cos.ap-singapore.myqcloud.com"
+
+search:
+  enabled: true
+  include_collections:
+    - posts
+    - statuses
