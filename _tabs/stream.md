@@ -163,7 +163,7 @@ html[data-mode="light"] .feed-collapse:hover { background:#1f2937; border-color:
           {% assign alt = img.alt | default: "photo" %}
           
           {% if src != "" %}
-            {% comment %} 1) 先把相对/绝对路径拼成 full {% endcomment %}
+            {%- comment -%} 组装 full：外链直用；相对路径拼 cos_img_base {%- endcomment -%}
             {% if src contains '://' %}
               {% assign full = src %}
             {% else %}
@@ -174,15 +174,8 @@ html[data-mode="light"] .feed-collapse:hover { background:#1f2937; border-color:
                 {% assign full = cos_base | append: '/' | append: src %}
               {% endif %}
             {% endif %}
-    
-            {% comment %} 2) 列表页加缩略图参数（若原本无 ?） {% endcomment %}
-            {% if full contains '?' %}
-              {% assign final = full %}
-            {% else %}
-              {% assign final = full | append: '?imageMogr2/thumbnail/960x/format/webp/quality/85' %}
-            {% endif %}
 
-            <img src="{{ full }}" alt="{{ alt | escape }}" loading="lazy" decoding="async">
+            <img src="{{ full }}" alt="{{ alt | escape }}" loading="lazy" style="width:100%;border-radius:8px;cursor:zoom-in;">
           {% endif %}
         {% endfor %}
       </div>
