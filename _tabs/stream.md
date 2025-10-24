@@ -155,28 +155,9 @@ html[data-mode="light"] .feed-collapse:hover { background:#1f2937; border-color:
     </div>
 
     {% if post.photos %}
-      {% assign cos_base = site.cos_img_base | default: "" %}
-      
       <div class="feed-photos">
         {% for img in post.photos %}
-          {% assign src = img.url | default: img.src | default: img | strip %}
-          {% assign alt = img.alt | default: "photo" %}
-          
-          {% if src != "" %}
-            {%- comment -%} 组装 full：外链直用；相对路径拼 cos_img_base {%- endcomment -%}
-            {% if src contains '://' %}
-              {% assign full = src %}
-            {% else %}
-              {% assign first = src | slice: 0, 1 %}
-              {% if first == '/' %}
-                {% assign full = cos_base | append: src %}
-              {% else %}
-                {% assign full = cos_base | append: '/' | append: src %}
-              {% endif %}
-            {% endif %}
-
-            <img src="{{ full }}" alt="{{ alt | escape }}" loading="lazy" style="width:100%;border-radius:8px;cursor:zoom-in;">
-          {% endif %}
+          <img src="{{ full }}" alt="{{ alt | escape }}" loading="lazy" style="width:100%;border-radius:8px;cursor:zoom-in;">
         {% endfor %}
       </div>
     {% endif %}
