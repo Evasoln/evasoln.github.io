@@ -37,7 +37,7 @@ social:
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
 
   links:
-    - https://github.com/evasoln # change to your GitHub homepage
+    - https://evasoln.github.io # change to your GitHub homepage
     # The first element serves as the copyright owner's link
     - https://weibo.com/u/7126201913 # change to your weibo homepage
     # Uncomment below to add more social links
