@@ -16,55 +16,50 @@ comments: true           # 是否开启评论
 如果把这轮危机比作一场地震，那么：
 
 graph TD
-    %% 节点样式定义
-    classDef startNode fill:#333,color:#fff,stroke:#333,stroke-width:2px;
-    classDef mainDept fill:#e3f2fd,stroke:#1565c0,stroke-width:2px;
-    classDef subDept fill:#f3e5f5,stroke:#7b1fa2;
-    classDef process fill:#fff,stroke:#333;
-    classDef drugNode fill:#fff9c4,stroke:#fbc02d,stroke-dasharray: 0;
-    classDef transfer fill:#ffebee,stroke:#c62828,stroke-dasharray: 5 5;
+    %% 定义样式类：模拟原图的灰色背景和圆角
+    classDef default fill:#e6e6e6,stroke:#666,stroke-width:2px,rx:5,ry:5,color:#333;
+    classDef root fill:#ccc,stroke:#333,stroke-width:2px,font-size:16px,font-weight:bold;
+    classDef redText color:#c00,font-weight:bold;
 
-    %% --- 主入口 ---
-    Start[HCC患者 / 门急诊] :::startNode
+    %% --- 根节点 ---
+    Root[门 / 急 诊]:::root
 
-    %% --- 一级分流 ---
-    Start -->|85%| Hep[肝胆外科] :::mainDept
-    Start -->|10%| Onco[肿瘤科] :::subDept
-    Start -->|5%| Other[其他科室] :::subDept
+    %% --- 第一层：科室分流 ---
+    Root --> Hepato[肝胆外科<br/><span class='redText'>85%</span>]
+    Root --> Onco[肿瘤科<br/><span class='redText'>10%</span>]
+    Root --> Other[其他科室<br/><span class='redText'>5%</span>]
 
-    %% --- 1. 肝胆外科流程 ---
-    Hep -->|5%| Lost[流失掉]
-    Hep -->|95%| Admitted[初步诊断后收住院] :::process
+    %% --- 肝胆外科分支 ---
+    Hepato --> Hepato_In[初步诊断后收住院<br/><span class='redText'>95%</span>]
+    Hepato --> Hepato_Out[流失掉<br/><span class='redText'>5%</span>]
 
-    %% 住院后分流
-    Admitted -->|70%| Surgery[手术]
-    Surgery --> PostOp[术后一个月内回院定期回访]
+    %% --- 住院后分支 ---
+    Hepato_In --> Surg[手 术<br/><span class='redText'>70%</span>]
+    Hepato_In --> NonSurg[非手术<br/><span class='redText'>30%</span>]
 
-    Admitted -->|30%| NonSurgery[非手术]
-    
-    %% 非手术细分
-    NonSurgery -->|5%| Local[局部治疗]
-    Local --> LocalDetail[介入治疗 (不出科)]
+    %% --- 手术后续 (带医生分布) ---
+    Surg --> Surg_Follow[术后一个月内回院定期回访<br/>梁霄 40%<br/>梁岳龙 20%<br/>陈鸣宇 15%<br/>虞洪 10%<br/>蔡柳新 5%]
 
-    NonSurgery -->|25%| Trial[临床试验]
-    Trial --> TrialDetail[按试验要求CRC定期回访]
+    %% --- 非手术分支 ---
+    NonSurg --> Local[局部治疗 <span class='redText'>5%</span><br/>介入治疗/不出科]
+    NonSurg --> Trial[临床试验 <span class='redText'>25%</span><br/>按实验要求CRC定期回访<br/>(梁霄 90%)]
+    NonSurg --> Systemic[局部+系统治疗 <span class='redText'>70%</span>]
 
-    NonSurgery -->|70%| SysTherapy[局部 + 系统治疗]
-    
-    %% 药物具体方案 (基于表格黄色高亮列)
-    SysTherapy -->|50%| Drug1[TKI + 免疫] :::drugNode
-    SysTherapy -->|35%| Drug2[贝伐类似物 + 免疫] :::drugNode
-    SysTherapy -->|13%| Drug3[T + A] :::drugNode
-    SysTherapy -->|2%| Drug4[双重免疫] :::drugNode
+    %% --- 系统治疗药物细分 ---
+    Systemic --> Drug1[贝伐类似物+免疫<br/><span class='redText'>35%</span>]
+    Systemic --> Drug2[TKI + 免疫<br/><span class='redText'>50%</span>]
+    Systemic --> Drug3[双免疫<br/><span class='redText'>2%</span>]
+    Systemic --> Drug4[T + A<br/><span class='redText'>13%</span>]
 
-    %% --- 2. 肿瘤科流程 ---
-    Onco --> OncoDiag[门诊初步诊断]
-    OncoDiag -->|10%| TransHep1[需要手术 -> 转去肝胆外科] :::transfer
-    OncoDiag -->|90%| StayOnco[药物治疗 -> 留本科室] :::process
+    %% --- 肿瘤科分支 ---
+    Onco --> Onco_Transfer[需手术转去肝胆外科<br/><span class='redText'>10%</span>]
+    Onco --> Onco_Stay[药物治疗留本科室<br/><span class='redText'>90%</span>]
 
-    %% --- 3. 其他科室流程 ---
-    Other --> OtherDiag[门诊初步诊断]
-    OtherDiag -->|100%| TransHep2[诊断HCC后 -> 直接转肝胆外科] :::transfer
+    %% --- 其他科室分支 ---
+    Other --> Other_Transfer[诊断HCC后直接转肝胆外科<br/><span class='redText'>100%</span>]
+
+    %% 连接线样式调整（可选，使其看起来更像层级图）
+    linkStyle default stroke:#666,stroke-width:1px;
 
 > **趋势向上，观察顶端的行为；趋势向下，观察底部的处境。  
 城市的脆弱性，决定了危机的顺序。**
